@@ -36,17 +36,14 @@
         }
         function drawTouch(e) {
             if (!painting) return;
-            e.preventDefault();  // Prevent scrolling while drawing
-
+            e.preventDefault();
             ctx.lineWidth = brushSize.value;
             ctx.lineCap = 'round';
             ctx.strokeStyle = erasing ? '#E5E5E5' : colorPicker.value;
-
-            const touch = e.touches[0];  // Get the first touch point
+            const touch = e.touches[0];
             const x = touch.clientX;
             const y = touch.clientY;
-
-            ctx.lineTo(x, y);  // Get touch coordinates
+            ctx.lineTo(x, y);
             ctx.stroke();
             ctx.beginPath();
             ctx.moveTo(x, y);
