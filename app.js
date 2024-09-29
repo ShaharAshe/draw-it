@@ -30,12 +30,33 @@
             ctx.beginPath();
             ctx.moveTo(e.clientX, e.clientY);
         }
+        function startTouchPosition(e) {
+            painting = true;
+            drawTouch(e);
+        }
+        function drawTouch(e) {
+            if (!painting) return;
+            e.preventDefault();  // Prevent scrolling while drawing
+
+            ctx.lineWidth = brushSize.value;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = erasing ? '#E5E5E5' : colorPicker.value;
+
+            const touch = e.touches[0];  // Get the first touch point
+            const x = touch.clientX;
+            const y = touch.clientY;
+
+            ctx.lineTo(x, y);  // Get touch coordinates
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mouseup', endPosition);
         canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', startPosition);
+        canvas.addEventListener('touchstart', startTouchPosition);
         canvas.addEventListener('touchend', endPosition);
-        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchmove', drawTouch);
         clearButton.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         });
